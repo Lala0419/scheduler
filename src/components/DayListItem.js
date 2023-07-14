@@ -12,10 +12,30 @@ export default function DayListItem(props) {
 		" day-list__item--full": props.spots === 0,
 	});
 
+	// const formatSpots = () => {
+	// 	if (props.spots === 0) {
+	// 		return "no spots remaining";
+	// 	} else if (props.spots === 1) {
+	// 		return "1 spot remaining";
+	// 	} else {
+	// 		return props.spots + "spots remaining";
+	// 	}
+	// };
+
+	// const formatSpots = () =>{
+	//   props.spots === 0?"no spots remaining":
+	// }
+
 	return (
 		<li className={dayClass} onClick={handleClick}>
 			<h2 className="text--regular">{props.name}</h2>
+			<h3 className="text--light">{props.spots === 0}no spots remaining</h3>
+			<h3 className="text--light">{props.spots === 1} 1 spot remaining</h3>
 			<h3 className="text--light">{props.spots} spots remaining</h3>
+			{/* another solution wchi you can specify when spots are more than 1 (props.spots > 1) */}
+			{/* {props.spots === 0 && <h3 className="text--light">no spots remaining</h3>}
+			{props.spots === 1&&<h3 className="text--light"> 1 spot remaining</h3>}
+			{props.spots>1 && <h3 className="text--light">{props.spots} spots remaining</h3>} */}
 		</li>
 	);
 }

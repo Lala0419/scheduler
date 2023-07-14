@@ -1,8 +1,28 @@
 import React from "react";
-
 import "components/Application.scss";
-
+import DayList from "./DayList";
+import { useState } from "react";
 export default function Application(props) {
+	const [day, setDay] = useState("Monday");
+
+	const days = [
+		{
+			id: 1,
+			name: "Monday",
+			spots: 2,
+		},
+		{
+			id: 2,
+			name: "Tuesday",
+			spots: 5,
+		},
+		{
+			id: 3,
+			name: "Wednesday",
+			spots: 0,
+		},
+	];
+
 	return (
 		<main className="layout">
 			<section className="sidebar">
@@ -12,7 +32,10 @@ export default function Application(props) {
 					alt="Interview Scheduler"
 				/>
 				<hr className="sidebar__separator sidebar--centered" />
-				<nav className="sidebar__menu"></nav>
+				<nav className="sidebar__menu">
+					{/* look these props are identical to the testing! day and setDay was coming from the useState */}
+					<DayList days={days} day={day} setDay={setDay} />
+				</nav>
 				<img
 					className="sidebar__lhl sidebar--centered"
 					src="images/lhl.png"

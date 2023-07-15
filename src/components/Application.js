@@ -34,7 +34,7 @@ export default function Application(props) {
 				<hr className="sidebar__separator sidebar--centered" />
 				<nav className="sidebar__menu">
 					{/* look these props are identical to the testing! day and setDay was coming from the useState */}
-					<DayList days={days} day={day} setDay={setDay} />
+					<DayList days={days} value={day} onChange={setDay} />
 				</nav>
 				<img
 					className="sidebar__lhl sidebar--centered"

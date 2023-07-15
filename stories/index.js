@@ -12,7 +12,12 @@ import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
 import Appointment from "components/Appointment/index.js";
 import Header from "components/Appointment/Header";
+import Show from "components/Appointment/Show";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
+import Form from "components/Appointment/Form";
 import Empty from "components/Appointment/Empty";
+import Confirm from "components/Appointment/Confirm";
 
 ////////////////////////////////////////
 // BUTTON
@@ -160,4 +165,19 @@ storiesOf("Appointment", module)
 	})
 	.add("Appointment", () => <Appointment time="12pm" />)
 	.add("Header", () => <Header time="12pm" onAdd={action("onAdd")} />) // the rest of your code should go here);
-	.add("Empty", () => <Empty onAdd={action("onAdd")} />); // the rest of your code should go here);
+	.add("Empty", () => <Empty onAdd={action("onAdd")} />) // the rest of your code should go here);
+	.add("Show", () => (
+		<Show
+			student="Lydia Miller-Jones"
+			interviewer={interviewer.name}
+			onEdit={action("onEdit")}
+			onDelete={action("onDelete")}
+		/>
+	))
+	.add("Confirm", () => (
+		<Confirm
+			message="Delete the appointment?"
+			onConfirm={action("onConfirm")}
+			onCancel={action("onCancel")}
+		/>
+	));

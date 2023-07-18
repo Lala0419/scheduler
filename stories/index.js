@@ -18,6 +18,7 @@ import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 import Empty from "components/Appointment/Empty";
 import Confirm from "components/Appointment/Confirm";
+import { Fragment } from "react";
 
 ////////////////////////////////////////
 // BUTTON
@@ -146,7 +147,7 @@ storiesOf("InterviewerList", module)
 	})
 	.add("Initial", () => <InterviewerList interviewers={interviewers} />)
 	.add("Selected", () => (
-		<InterviewerList interviewers={interviewers} value={3} />
+		<InterviewerList interviewers={interviewers} value={interviewer.id} />
 	))
 	.add("Clickable", () => (
 		<InterviewerList
@@ -181,4 +182,42 @@ storiesOf("Appointment", module)
 			onCancel={action("onCancel")}
 		/>
 	))
-	.add("Status", () => <Status message="Deleting" />);
+	.add("Status", () => <Status message="Deleting" />)
+	.add("Error", () => (
+		<Error
+			message="Could not delete the appointment?"
+			onClose={action("onClose")}
+		/>
+	))
+	.add("Create", () => (
+		<Form
+			interviewers={interviewers}
+			onSave={action("onSave")}
+			onCancel={action("onCancel")}
+		/>
+	))
+	.add("Edit", () => (
+		<Form
+			interviewers={interviewers}
+			interviewer={1}
+			onSave={action("onSave")}
+			onCancel={action("onCancel")}
+			student="Nanaya"
+		/>
+	))
+	.add("Appointment Empty", () => (
+		<Fragment>
+			<Appointment id={1} time="4pm" />
+			<Appointment time="5pm" />
+		</Fragment>
+	))
+	.add("Appointment Booked", () => (
+		<Fragment>
+			<Appointment
+				id={1}
+				time="4pm"
+				interview={{ student: "Lydia Miller-Jones", interviewer }}
+			/>
+			<Appointment time="5pm" />
+		</Fragment>
+	));

@@ -7,12 +7,12 @@ export default function Form(props) {
 	const [student, setStudent] = useState(props.student || "");
 	const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
-	// const handleChange = (e) => {
-	// 	setStudent(e.target.value);
-	// };
-	// const handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// };
+	const handleChange = (e) => {
+		setStudent(e.target.value);
+	};
+	const handleSubmit = (e) => {
+		e.preventDefault();
+	};
 
 	const reset = () => {
 		setStudent("");
@@ -26,20 +26,13 @@ export default function Form(props) {
 	return (
 		<main className="appointment__card appointment__card--create">
 			<section className="appointment__card-left">
-				<form
-					autoComplete="off"
-					onSubmit={(e) => {
-						e.preventDefault();
-					}}
-				>
+				<form autoComplete="off" onSubmit={handleSubmit}>
 					<input
 						className="appointment__create-input text--semi-bold"
 						name="name"
 						type="text"
 						placeholder="Enter Student Name"
-						onChange={(e) => {
-							setStudent(e.target.value);
-						}}
+						onChange={handleChange}
 						value={student}
 						/*
           This must be a controlled component
@@ -58,7 +51,7 @@ export default function Form(props) {
 			</section>
 			<section className="appointment__card-right">
 				<section className="appointment__actions">
-					<Button danger onClick={props.onCancel}>
+					<Button danger onClick={cancel}>
 						Cancel
 					</Button>
 					<Button confirm onClick={props.onSave}>

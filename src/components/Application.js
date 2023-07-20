@@ -25,11 +25,13 @@ export default function Application(props) {
 
 		const promises = [daysPromise, appointmentsPromise];
 
+		// make multiple requests at the same time for our dependent data by using Promise.all
 		Promise.all(promises).then((all) => {
 			console.log(all);
-
 			const daysData = all[0].data;
 			const appointmentsData = all[1].data;
+
+			//update the state
 			setState((prev) => ({
 				...prev,
 				days: daysData,

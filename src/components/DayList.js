@@ -4,7 +4,7 @@ import DayListItem from "./DayListItem";
 export default function DayList(props) {
 	const listItems = props.days.map((day) => {
 		const handleClick = () => {
-			props.onChange(props.name);
+			props.onChange(day.name);
 		};
 		return (
 			<DayListItem

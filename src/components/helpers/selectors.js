@@ -6,7 +6,7 @@ export function getAppointmentsForDay(state, day) {
 	const selectedDay = state.days.find((d) => d.name === day);
 	//const selectedDay = state.days.filter((d) => d.name === day)[0];
 	console.log("selectedDay", selectedDay);
-	if (selectedDay == undefined) {
+	if (selectedDay === undefined) {
 		return [];
 	}
 

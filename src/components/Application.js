@@ -4,14 +4,14 @@ import DayList from "./DayList";
 import { useState, useEffect } from "react";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { getAppointmentsForDay } from "./helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "./helpers/selectors";
 
 export default function Application(props) {
 	const [state, setState] = useState({
 		day: "Monday",
 		days: [],
-		// you may put the line below, but will have to remove/comment hardcoded appointments variable
 		appointments: {},
+		interviewers: {},
 	});
 	const dailyAppointments = getAppointmentsForDay(state, state.day);
 	const setDay = (day) => setState((prev) => ({ ...prev, day }));
@@ -22,8 +22,9 @@ export default function Application(props) {
 		const baseUrl = "http://localhost:8001/api";
 		const daysPromise = axios.get(`${baseUrl}/days`);
 		const appointmentsPromise = axios.get(`${baseUrl}/appointments`);
+		const interviewersPromise = axios.get(`${baseUrl}/interviewers`);
 
-		const promises = [daysPromise, appointmentsPromise];
+		const promises = [daysPromise, appointmentsPromise, interviewersPromise];
 
 		// make multiple requests at the same time for our dependent data by using Promise.all
 		Promise.all(promises).then((all) => {
@@ -41,6 +42,8 @@ export default function Application(props) {
 	}, []);
 
 	const appArray = dailyAppointments.map((appointment) => {
+		const interview = getInterview(state, appointment.interview);
+
 		return <Appointment key={appointment.id} {...appointment} />;
 	});
 	return (

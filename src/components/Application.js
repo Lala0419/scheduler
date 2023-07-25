@@ -17,14 +17,9 @@ export default function Application(props) {
 		appointments: {},
 		interviewers: {},
 	});
-	const dailyAppointments = getAppointmentsForDay(state, state.day);
-	const dailyInterviewers = getInterviewersForDay(state, state.day);
-	const setDay = (day) => setState((prev) => ({ ...prev, day }));
-	console.log("dailyInterviewers", dailyInterviewers);
-	//const setDays = (days) => setState((prev) => ({ ...prev, days }));
+	const baseUrl = "/api";
 
 	useEffect(() => {
-		const baseUrl = "/api";
 		const daysPromise = axios.get(`${baseUrl}/days`);
 		const appointmentsPromise = axios.get(`${baseUrl}/appointments`);
 		const interviewersPromise = axios.get(`${baseUrl}/interviewers`);
@@ -47,6 +42,32 @@ export default function Application(props) {
 		});
 	}, []);
 
+	const dailyAppointments = getAppointmentsForDay(state, state.day);
+	const dailyInterviewers = getInterviewersForDay(state, state.day);
+	const setDay = (day) => setState((prev) => ({ ...prev, day }));
+	console.log("dailyInterviewers", dailyInterviewers);
+	//const setDays = (days) => setState((prev) => ({ ...prev, days }));
+
+	function bookInterview(id, interview) {
+		console.log("bookInterview", id, interview);
+		const appointment = {
+			...state.appointments[id],
+			interview: { ...interview },
+		};
+		const appointments = {
+			...state.appointments,
+			[id]: appointment,
+		};
+
+		return axios
+			.put(`${baseUrl}/appointments/${id}`, { interview })
+			.then(() => {
+				setState({
+					...state,
+					appointments,
+				});
+			});
+	}
 	const appArray = dailyAppointments.map((appointment) => {
 		const interview = getInterview(state, appointment.interview);
 		return (
@@ -54,12 +75,15 @@ export default function Application(props) {
 				key={appointment.id}
 				{...appointment}
 				interviewers={dailyInterviewers}
+				bookInterview={bookInterview}
+				interview={interview}
 			/>
 		);
 	});
 	// const interviewerArray = dailyInterviewers.map((interview) => {
 	// 	return <Appointment key={interview.id} {...interview} />;
 	// });
+
 	return (
 		<main className="layout">
 			<section className="sidebar">

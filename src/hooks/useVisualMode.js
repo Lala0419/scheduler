@@ -8,20 +8,21 @@ export function useVisualMode(initial) {
 	function transition(newMode, replace = false) {
 		if (!replace) {
 			//add the new mode to our history
-			setHistory([...history, newMode]);
-			console.log("history", history); //FIRST
+			setHistory((prevHistory) => [...prevHistory, newMode]);
+			//console.log("history", history); //FIRST
 			//and set the new mode
 			setMode(newMode);
-			console.log("newMode", newMode); //SECOND
+			//console.log("newMode", newMode); //SECOND
 		} else {
-			const temp = history;
-			console.log("temp", temp); //[ 'FIRST', 'SECOND' ]
+			const temp = [...history]; //dont do temp = history because that will point out the original reference and we dont want that
+			// //	console.log("temp", temp); //[ 'FIRST', 'SECOND' ]
 
 			temp.pop();
 			setHistory([...temp, newMode]);
-			console.log("tempafterset", temp); //[ 'FIRST' ]
+
+			//console.log("tempafterset", temp); //[ 'FIRST' ]
 			setMode(newMode);
-			console.log("newMode", newMode); //[ 'FIRST' ]
+			//	console.log("newMode", newMode); //[ 'FIRST' ]
 		}
 	}
 
@@ -38,7 +39,7 @@ export function useVisualMode(initial) {
 		setMode(prevMode);
 		setHistory(newHistory);
 	}
-	return { mode, transition, back }; //{mode: mode}
+	return { mode, transition, back, history }; //{mode: mode}
 }
 
 /////////////////////////

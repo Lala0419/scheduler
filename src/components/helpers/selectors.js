@@ -5,7 +5,7 @@ export function getAppointmentsForDay(state, day) {
 	}
 	const selectedDay = state.days.find((d) => d.name === day);
 	//const selectedDay = state.days.filter((d) => d.name === day)[0];
-	console.log("selectedDay", selectedDay);
+	//console.log("selectedDay", selectedDay);
 	if (selectedDay === undefined) {
 		return [];
 	}
@@ -135,7 +135,7 @@ export function getInterviewersForDay(state, day) {
 	}
 	const selectedDay = state.days.find((d) => d.name === day);
 	//const selectedDay = state.days.filter((d) => d.name === day)[0];
-	console.log("selectedDayI", selectedDay);
+	//console.log("selectedDayI", selectedDay);
 	if (selectedDay === undefined) {
 		return [];
 	}
@@ -144,7 +144,7 @@ export function getInterviewersForDay(state, day) {
 		(interviewerID) => state.interviewers[interviewerID]
 	);
 
-	console.log("interviewersForDay", interviewersForDay);
+	//console.log("interviewersForDay", interviewersForDay);
 
 	return interviewersForDay;
 }

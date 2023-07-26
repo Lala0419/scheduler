@@ -28,7 +28,7 @@ export default function Application(props) {
 
 		// make multiple requests at the same time for our dependent data by using Promise.all
 		Promise.all(promises).then((all) => {
-			console.log(all);
+			//	console.log(all);
 			const daysData = all[0].data;
 			const appointmentsData = all[1].data;
 			const interviewersData = all[2].data;
@@ -45,11 +45,11 @@ export default function Application(props) {
 	const dailyAppointments = getAppointmentsForDay(state, state.day);
 	const dailyInterviewers = getInterviewersForDay(state, state.day);
 	const setDay = (day) => setState((prev) => ({ ...prev, day }));
-	console.log("dailyInterviewers", dailyInterviewers);
+	//	console.log("dailyInterviewers", dailyInterviewers);
 	//const setDays = (days) => setState((prev) => ({ ...prev, days }));
 
 	function bookInterview(id, interview) {
-		console.log("bookInterview", id, interview);
+		//console.log("bookInterview", id, interview);
 		const appointment = {
 			...state.appointments[id],
 			interview: { ...interview },
@@ -68,6 +68,25 @@ export default function Application(props) {
 				});
 			});
 	}
+
+	function cancelInterview(id) {
+		//console.log("cancelInterview", id);
+		const appointment = {
+			...state.appointments[id],
+			interview: null,
+		};
+		const appointments = {
+			...state.appointments,
+			[id]: appointment,
+		};
+
+		return axios.delete(`${baseUrl}/appointments/${id}`).then(() => {
+			setState({
+				...state,
+				appointments,
+			});
+		});
+	}
 	const appArray = dailyAppointments.map((appointment) => {
 		const interview = getInterview(state, appointment.interview);
 		return (
@@ -76,6 +95,7 @@ export default function Application(props) {
 				{...appointment}
 				interviewers={dailyInterviewers}
 				bookInterview={bookInterview}
+				cancelInterview={cancelInterview}
 				interview={interview}
 			/>
 		);

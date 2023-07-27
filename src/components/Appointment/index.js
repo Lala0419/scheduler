@@ -19,13 +19,13 @@ export default function Appointment(props) {
 	const EDIT = "EDIT";
 	const ERROR_SAVE = "ERROR_SAVE";
 	const ERROR_DELETE = "ERROR_DELETE";
-	const { mode, transition, back, history } = useVisualMode(
+	const { mode, transition, back } = useVisualMode(
 		props.interview ? SHOW : EMPTY
 	);
 	//console.log("props.interviewers", props.interviewers);
 	//console.log("propsAppo", props);
-	console.log("mode", mode);
-	console.log("history", history);
+	//console.log("mode", mode);
+	//console.log("history", history);
 
 	function save(name, interviewer) {
 		const interview = {
@@ -92,7 +92,7 @@ export default function Appointment(props) {
 				/>
 			)}
 			{mode === DELETING && <Status message="DELETING" />}
-			{(mode === ERROR_DELETE || mode == ERROR_SAVE) && (
+			{(mode === ERROR_DELETE || mode === ERROR_SAVE) && (
 				<Error onClose={back} />
 			)}
 		</div>

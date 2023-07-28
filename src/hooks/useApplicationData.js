@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 const updateSpots = function (dayName, days, appointments) {
@@ -31,14 +31,49 @@ const updateSpots = function (dayName, days, appointments) {
 // 	return newDays;
 // }
 
+/////////////////
+// useReduce
+//////////////////
+
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
+const baseUrl = "/api";
+function reducer(state, action) {
+	switch (action.type) {
+		case SET_DAY:
+			return {
+				/* insert logic */
+				...state,
+				day: action.payload,
+			};
+		case SET_APPLICATION_DATA:
+			return {
+				/* insert logic */
+				...state,
+				...action.payload,
+			};
+		case SET_INTERVIEW:
+			return {
+				/* insert logic */
+				...state,
+				appointments: action.payload.appointments,
+				days: action.payload.days,
+			};
+		default:
+			throw new Error(
+				`Tried to reduce with unsupported action type: ${action.type}`
+			);
+	}
+}
+
 function useApplicationData() {
-	const [state, setState] = useState({
+	const [state, dispatch] = useReducer(reducer, {
 		day: "Monday",
 		days: [],
 		appointments: {},
 		interviewers: {},
 	});
-	const baseUrl = "/api";
 
 	useEffect(() => {
 		const daysPromise = axios.get(`${baseUrl}/days`);
@@ -54,16 +89,24 @@ function useApplicationData() {
 			const appointmentsData = all[1].data;
 			const interviewersData = all[2].data;
 			//update the state
-			setState((prev) => ({
-				...prev,
-				days: daysData,
-				appointments: appointmentsData,
-				interviewers: interviewersData,
-			}));
+			dispatch({
+				type: SET_APPLICATION_DATA,
+				payload: {
+					days: daysData,
+					appointments: appointmentsData,
+					interviewers: interviewersData,
+				},
+			});
+			// setState((prev) => ({
+			// 	...prev,
+			// 	days: daysData,
+			// 	appointments: appointmentsData,
+			// 	interviewers: interviewersData,
+			// }));
 		});
 	}, []);
 
-	const setDay = (day) => setState((prev) => ({ ...prev, day }));
+	const setDay = (day) => dispatch({ type: SET_DAY, payload: day });
 
 	function bookInterview(id, interview) {
 		//console.log("bookInterview", id, interview);
@@ -81,11 +124,12 @@ function useApplicationData() {
 			.then(() => {
 				const days = updateSpots(state.day, state.days, appointments);
 				//const days = updateSpots(state, state.day);
-				setState((prevState) => ({
-					...prevState,
-					appointments,
-					days,
-				}));
+				dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
+				// dispatch((prevState) => ({
+				// 	...prevState,
+				// 	appointments,
+				// 	days,
+				// }));
 			});
 	}
 
@@ -104,11 +148,12 @@ function useApplicationData() {
 			const days = updateSpots(state.day, state.days, appointments);
 			//const days = updateSpots(state, state.day);
 
-			setState((prevState) => ({
-				...prevState,
-				appointments,
-				days,
-			}));
+			dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
+			// dispatch((prevState) => ({
+			// 	...prevState,
+			// 	appointments,
+			// 	days,
+			// }));
 		});
 	}
 

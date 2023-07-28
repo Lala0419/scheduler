@@ -1,6 +1,36 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const updateSpots = function (dayName, days, appointments) {
+	const day = days.find((d) => d.name === dayName);
+
+	const spots = day.appointments.filter(
+		(id) => appointments[id].interview === null
+	).length;
+
+	const newDay = { ...day, spots };
+	const newDays = days.map((d) => (d.name === dayName ? newDay : d));
+
+	return newDays;
+};
+
+// //////////////////
+// //My code
+// ///////////////////
+
+// function updateSpots(state, dayName) {
+// 	const day = state.days.find((day) => day.name === dayName);
+// 	const avaiableSpot = day.appointments.filter(
+// 		(appointmentId) => state.appointments[appointmentId].interview === null
+// 	).length;
+// 	const newDay = { ...day, spots: avaiableSpot }; //this is creating a brandnew obj with updated spots property with value, avaialbleSpot
+// 	const newDays = state.days.map((d) => (d.name === dayName ? newDay : d));
+
+// 	//day.spots = avaiableSpot;
+// 	console.log("state", state);
+// 	return newDays;
+// }
+
 function useApplicationData() {
 	const [state, setState] = useState({
 		day: "Monday",
@@ -49,10 +79,13 @@ function useApplicationData() {
 		return axios
 			.put(`${baseUrl}/appointments/${id}`, { interview })
 			.then(() => {
-				setState({
-					...state,
+				const days = updateSpots(state.day, state.days, appointments);
+				//const days = updateSpots(state, state.day);
+				setState((prevState) => ({
+					...prevState,
 					appointments,
-				});
+					days,
+				}));
 			});
 	}
 
@@ -68,10 +101,14 @@ function useApplicationData() {
 		};
 
 		return axios.delete(`${baseUrl}/appointments/${id}`).then(() => {
-			setState({
-				...state,
+			const days = updateSpots(state.day, state.days, appointments);
+			//const days = updateSpots(state, state.day);
+
+			setState((prevState) => ({
+				...prevState,
 				appointments,
-			});
+				days,
+			}));
 		});
 	}
 

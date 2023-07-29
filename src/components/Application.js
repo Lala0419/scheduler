@@ -12,17 +12,7 @@ import useApplicationData from "hooks/useApplicationData";
 export default function Application(props) {
 	const { state, setDay, bookInterview, cancelInterview } =
 		useApplicationData();
-	// console.log(
-	// 	"useApplication",
-	// 	"state",
-	// 	state,
-	// 	"setDay",
-	// 	setDay,
-	// 	"bookInterview",
-	// 	bookInterview,
-	// 	"cancelInterview",
-	// 	cancelInterview
-	// );
+
 	const dailyInterviewers = getInterviewersForDay(state, state.day);
 	const dailyAppointments = getAppointmentsForDay(state, state.day);
 
@@ -49,7 +39,6 @@ export default function Application(props) {
 				/>
 				<hr className="sidebar__separator sidebar--centered" />
 				<nav className="sidebar__menu">
-					{/* look these props are identical to the testing! day and setDay was coming from the useState */}
 					<DayList days={state.days} value={state.day} onChange={setDay} />
 				</nav>
 				<img

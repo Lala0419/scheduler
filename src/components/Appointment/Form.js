@@ -4,7 +4,6 @@ import InterviewerListItem from "components/InterviewerListItem";
 import React, { useState } from "react";
 
 export default function Form(props) {
-	//console.log("propsForm", props);
 	const [student, setStudent] = useState(props.student || "");
 	const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
@@ -35,19 +34,12 @@ export default function Form(props) {
 						placeholder="Enter Student Name"
 						onChange={handleChange}
 						value={student}
-						/*
-          This must be a controlled component
-          your code goes here
-        */
 					/>
 				</form>
 				<InterviewerList
 					interviewers={props.interviewers}
 					value={interviewer}
 					onChange={setInterviewer}
-
-					//tried handleClick, onChange, props.onChange
-					/* your code goes here */
 				/>
 			</section>
 			<section className="appointment__card-right">

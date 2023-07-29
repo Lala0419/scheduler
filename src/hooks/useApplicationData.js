@@ -1,35 +1,40 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-const updateSpots = function (dayName, days, appointments) {
-	const day = days.find((d) => d.name === dayName);
+////////////////
+// with help
+///////////////////
+// const updateSpots = function (dayName, days, appointments) {
+// 	const day = days.find((d) => d.name === dayName);
 
-	const spots = day.appointments.filter(
-		(id) => appointments[id].interview === null
-	).length;
+// 	const spots = day.appointments.filter(
+// 		(id) => appointments[id].interview === null
+// 	).length;
 
-	const newDay = { ...day, spots };
-	const newDays = days.map((d) => (d.name === dayName ? newDay : d));
+// 	const newDay = { ...day, spots };
+// 	const newDays = days.map((d) => (d.name === dayName ? newDay : d));
 
-	return newDays;
-};
+// 	return newDays;
+// };
 
 // //////////////////
 // //My code
 // ///////////////////
+// this wasn't working because it was updating the old ver state.
+// so if you go down line 132(and 157), I added state with spread operator and new  state ver of appointments obj from line 151 (and line 124)
 
-// function updateSpots(state, dayName) {
-// 	const day = state.days.find((day) => day.name === dayName);
-// 	const avaiableSpot = day.appointments.filter(
-// 		(appointmentId) => state.appointments[appointmentId].interview === null
-// 	).length;
-// 	const newDay = { ...day, spots: avaiableSpot }; //this is creating a brandnew obj with updated spots property with value, avaialbleSpot
-// 	const newDays = state.days.map((d) => (d.name === dayName ? newDay : d));
+function updateSpots(state, dayName) {
+	const day = state.days.find((day) => day.name === dayName);
+	const avaiableSpot = day.appointments.filter(
+		(appointmentId) => state.appointments[appointmentId].interview === null
+	).length;
+	const newDay = { ...day, spots: avaiableSpot }; //this is creating a brandnew obj with updated spots property with value, avaialbleSpot
+	const newDays = state.days.map((d) => (d.name === dayName ? newDay : d));
 
-// 	//day.spots = avaiableSpot;
-// 	console.log("state", state);
-// 	return newDays;
-// }
+	//day.spots = avaiableSpot;
+	console.log("state", state);
+	return newDays;
+}
 
 /////////////////
 // useReduce
@@ -124,8 +129,10 @@ function useApplicationData() {
 		return axios
 			.put(`${baseUrl}/appointments/${id}`, { interview })
 			.then(() => {
-				const days = updateSpots(state.day, state.days, appointments);
-				//const days = updateSpots(state, state.day);
+				const copyOfState = { ...state, appointments: appointments };
+				//	const days = updateSpots(state.day, state.days, appointments);
+				const days = updateSpots(copyOfState, state.day);
+				console.log("days", days);
 				dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
 				// setState((prevState) => ({
 				// 	...prevState,
@@ -147,9 +154,9 @@ function useApplicationData() {
 		};
 
 		return axios.delete(`${baseUrl}/appointments/${id}`).then(() => {
-			const days = updateSpots(state.day, state.days, appointments);
-			//const days = updateSpots(state, state.day);
-
+			const copyOfState = { ...state, appointments: appointments };
+			const days = updateSpots(copyOfState, state.day);
+			//const days = updateSpots(state.day, state.days, appointments);
 			dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
 			// setState((prevState) => ({
 			// 	...prevState,

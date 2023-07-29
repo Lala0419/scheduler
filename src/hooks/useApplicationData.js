@@ -67,13 +67,15 @@ function reducer(state, action) {
 	}
 }
 
+const INITIAL_STATE = {
+	day: "Monday",
+	days: [],
+	appointments: {},
+	interviewers: {},
+};
+
 function useApplicationData() {
-	const [state, dispatch] = useReducer(reducer, {
-		day: "Monday",
-		days: [],
-		appointments: {},
-		interviewers: {},
-	});
+	const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
 	useEffect(() => {
 		const daysPromise = axios.get(`${baseUrl}/days`);
@@ -125,7 +127,7 @@ function useApplicationData() {
 				const days = updateSpots(state.day, state.days, appointments);
 				//const days = updateSpots(state, state.day);
 				dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
-				// dispatch((prevState) => ({
+				// setState((prevState) => ({
 				// 	...prevState,
 				// 	appointments,
 				// 	days,
@@ -149,7 +151,7 @@ function useApplicationData() {
 			//const days = updateSpots(state, state.day);
 
 			dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
-			// dispatch((prevState) => ({
+			// setState((prevState) => ({
 			// 	...prevState,
 			// 	appointments,
 			// 	days,

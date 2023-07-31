@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
+import { INITIAL_STATE, ACTION_TYPES, setReducer } from "../setReducer";
 
 function updateSpots(state, dayName) {
 	const day = state.days.find((day) => day.name === dayName);
@@ -12,51 +13,48 @@ function updateSpots(state, dayName) {
 	return newDays;
 }
 
-/////////////////////
-// useReduce
-/////////////////////
+// /////////////////////
+// // useReduce
+// /////////////////////
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
+// const SET_DAY = "SET_DAY";
+// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+// const SET_INTERVIEW = "SET_INTERVIEW";
+// function reducer(state, action) {
+// 	switch (action.type) {
+// 		case SET_DAY:
+// 			return {
+// 				...state,
+// 				day: action.payload,
+// 			};
+// 		case SET_APPLICATION_DATA:
+// 			return {
+// 				...state,
+// 				...action.payload,
+// 			};
+// 		case SET_INTERVIEW:
+// 			return {
+// 				...state,
+// 				appointments: action.payload.appointments,
+// 				days: action.payload.days,
+// 			};
+// 		default:
+// 			throw new Error(
+// 				`Tried to reduce with unsupported action type: ${action.type}`
+// 			);
+// 	}
+// }
+
+// const INITIAL_STATE = {
+// 	day: "Monday",
+// 	days: [],
+// 	appointments: {},
+// 	interviewers: {},
+// };
+
 const baseUrl = "/api";
-function reducer(state, action) {
-	switch (action.type) {
-		case SET_DAY:
-			return {
-				/* insert logic */
-				...state,
-				day: action.payload,
-			};
-		case SET_APPLICATION_DATA:
-			return {
-				/* insert logic */
-				...state,
-				...action.payload,
-			};
-		case SET_INTERVIEW:
-			return {
-				/* insert logic */
-				...state,
-				appointments: action.payload.appointments,
-				days: action.payload.days,
-			};
-		default:
-			throw new Error(
-				`Tried to reduce with unsupported action type: ${action.type}`
-			);
-	}
-}
-
-const INITIAL_STATE = {
-	day: "Monday",
-	days: [],
-	appointments: {},
-	interviewers: {},
-};
-
 function useApplicationData() {
-	const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+	const [state, dispatch] = useReducer(setReducer, INITIAL_STATE);
 
 	useEffect(() => {
 		const daysPromise = axios.get(`${baseUrl}/days`);
@@ -71,7 +69,7 @@ function useApplicationData() {
 			const interviewersData = all[2].data;
 
 			dispatch({
-				type: SET_APPLICATION_DATA,
+				type: ACTION_TYPES.SET_APPLICATION_DATA,
 				payload: {
 					days: daysData,
 					appointments: appointmentsData,
@@ -81,7 +79,8 @@ function useApplicationData() {
 		});
 	}, []);
 
-	const setDay = (day) => dispatch({ type: SET_DAY, payload: day });
+	const setDay = (day) =>
+		dispatch({ type: ACTION_TYPES.SET_DAY, payload: day });
 
 	function bookInterview(id, interview) {
 		const appointment = {
@@ -100,7 +99,10 @@ function useApplicationData() {
 
 				const days = updateSpots(copyOfState, state.day);
 
-				dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
+				dispatch({
+					type: ACTION_TYPES.SET_INTERVIEW,
+					payload: { appointments, days },
+				});
 			});
 	}
 
@@ -117,7 +119,10 @@ function useApplicationData() {
 		return axios.delete(`${baseUrl}/appointments/${id}`).then(() => {
 			const copyOfState = { ...state, appointments: appointments };
 			const days = updateSpots(copyOfState, state.day);
-			dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
+			dispatch({
+				type: ACTION_TYPES.SET_INTERVIEW,
+				payload: { appointments, days },
+			});
 		});
 	}
 

@@ -9,7 +9,6 @@ function updateSpots(state, dayName) {
 	const newDay = { ...day, spots: avaiableSpot };
 	const newDays = state.days.map((d) => (d.name === dayName ? newDay : d));
 
-	console.log("state", state);
 	return newDays;
 }
 
@@ -100,7 +99,7 @@ function useApplicationData() {
 				const copyOfState = { ...state, appointments: appointments };
 
 				const days = updateSpots(copyOfState, state.day);
-				console.log("days", days);
+
 				dispatch({ type: SET_INTERVIEW, payload: { appointments, days } });
 			});
 	}

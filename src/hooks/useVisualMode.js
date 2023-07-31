@@ -12,11 +12,16 @@ export function useVisualMode(initial) {
 			//and set the new mode
 			setMode(newMode);
 		} else {
-			const temp = [...history];
-			temp.pop();
-			setHistory([...temp, newMode]);
-			setMode(newMode);
+			setHistory((prev) => {
+				const temp = [...prev];
+				temp.pop();
+				return [...temp, newMode];
+			});
+			// const temp = [...history];
+			// temp.pop();
+			// setHistory([...temp, newMode]);
 		}
+		setMode(newMode);
 	}
 
 	function back() {

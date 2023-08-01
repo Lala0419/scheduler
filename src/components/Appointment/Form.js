@@ -5,12 +5,23 @@ import React, { useState } from "react";
 export default function Form(props) {
 	const [student, setStudent] = useState(props.student || "");
 	const [interviewer, setInterviewer] = useState(props.interviewer || null);
+	const [errorMsg, setErrorMsg] = useState("");
 
 	const handleChange = (e) => {
 		setStudent(e.target.value);
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
+	};
+	const handleClick = () => {
+		if (student && interviewer) {
+			props.onSave(student, interviewer);
+		} else {
+			setErrorMsg("Please fill your name and choose a interviewer");
+			setTimeout(() => {
+				setErrorMsg("");
+			}, 2000);
+		}
 	};
 
 	const reset = () => {
@@ -40,18 +51,14 @@ export default function Form(props) {
 					value={interviewer}
 					onChange={setInterviewer}
 				/>
+				{errorMsg && <p className="errorMsg">{errorMsg}</p>}
 			</section>
 			<section className="appointment__card-right">
 				<section className="appointment__actions">
 					<Button danger onClick={cancel}>
 						Cancel
 					</Button>
-					<Button
-						confirm
-						onClick={() => {
-							props.onSave(student, interviewer);
-						}}
-					>
+					<Button confirm onClick={handleClick}>
 						Save
 					</Button>
 				</section>

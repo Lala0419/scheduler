@@ -39,3 +39,7 @@ react-dom: "^16.9.0",
 react-hooks-testing-library: "^0.6.0",
 react-scripts: "3.4.4"
 ```
+
+## Final Product
+
+### ![](https://github.com/Lala0419/scheduler/blob/master/public/images/schedular.gif)

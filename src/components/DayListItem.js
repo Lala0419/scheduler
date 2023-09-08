@@ -13,7 +13,12 @@ export default function DayListItem(props) {
 	};
 
 	return (
-		<li className={dayClass} onClick={handleClick} selected={props.selected}>
+		<li
+			className={dayClass}
+			onClick={handleClick}
+			selected={props.selected}
+			data-testid="day"
+		>
 			<h2 className="text--regular">{props.name}</h2>
 			{props.spots === 0 && <h3 className="text--light">no spots remaining</h3>}
 			{props.spots === 1 && <h3 className="text--light"> 1 spot remaining</h3>}

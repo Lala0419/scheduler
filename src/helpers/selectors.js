@@ -1,9 +1,9 @@
 export function getAppointmentsForDay(state, day) {
-	if (state.days.length === 0) {
+	console.log("state.days", state.days);
+	if (!state.days || state.days.length === 0) {
 		return [];
 	}
-	const selectedDay = state?.days?.filter((d) => d.name === day);
-	console.log("state.days", state.days);
+	const selectedDay = state.days.find((d) => d.name === day);
 	if (selectedDay === undefined) {
 		return [];
 	}
@@ -34,11 +34,11 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day) {
-	if (state.days.length === 0) {
+	console.log("state.days", state.days);
+	if (!state.days || state.days.length === 0) {
 		return [];
 	}
-	const selectedDay = state?.days?.filter((d) => d.name === day);
-
+	const selectedDay = state.days.find((d) => d.name === day);
 	if (selectedDay === undefined) {
 		return [];
 	}

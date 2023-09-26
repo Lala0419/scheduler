@@ -52,7 +52,8 @@ function updateSpots(state, dayName) {
 // 	interviewers: {},
 // };
 
-const baseUrl = "/api";
+const baseUrl = `${process.env.REACT_APP_BASE_URL}/api`;
+console.log("baseURL", baseUrl);
 function useApplicationData() {
 	const [state, dispatch] = useReducer(setReducer, INITIAL_STATE);
 
@@ -65,6 +66,7 @@ function useApplicationData() {
 
 		Promise.all(promises).then((all) => {
 			const daysData = all[0].data;
+			console.log("all", all);
 			const appointmentsData = all[1].data;
 			const interviewersData = all[2].data;
 

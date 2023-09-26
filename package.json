@@ -52,6 +52,5 @@
 			"<rootDir>/node_modules/",
 			"<rootDir>/.git/"
 		]
-	},
-	"proxy": "https://scheduler-api-fgyt.onrender.com"
+	}
 }

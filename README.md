@@ -42,4 +42,4 @@ react-scripts: "3.4.4"
 
 ## Final Product
 
-### ![](https://github.com/Lala0419/scheduler/blob/master/public/images/schedular.gif)
+ <img src="https://github.com/Lala0419/scheduler/blob/master/public/images/schedular.gif" width="100%" />

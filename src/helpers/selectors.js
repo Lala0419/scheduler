@@ -2,7 +2,7 @@ export function getAppointmentsForDay(state, day) {
 	if (state.days.length === 0) {
 		return [];
 	}
-	const selectedDay = state.days.find((d) => d.name === day);
+	const selectedDay = state?.days?.find((d) => d.name === day);
 
 	if (selectedDay === undefined) {
 		return [];
